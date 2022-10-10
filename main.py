@@ -5,8 +5,11 @@ from gpiozero import Motor
 import json
 import threading
 
+from lights import police_blink, shift_update, blanks
+
 leftMotor = Motor(12, 13)
 rightMotor = Motor(25, 21)
+lightsOn = False
 
 PORT = 1488
 
@@ -37,6 +40,28 @@ def idle():
     rightMotor.stop()
 
 
+def enable_lights():
+    global lightsOn
+
+    lightsOn = True
+
+    while lightsOn:
+
+        try:
+            police_blink()
+        except KeyboardInterrupt:
+            shift_update([0, 0, 0] + blanks)
+
+        break
+
+
+def disable_lights():
+    global lightsOn
+
+    lightsOn = False
+    shift_update([0, 0, 0] + blanks)
+
+
 def awakening():
     leftMotor.forward(1)
     time.sleep(.5)
@@ -55,8 +80,9 @@ async def echo(websocket):
         idle()
 
         payload = json.loads(message)
-        left = payload["left"]
-        right = payload["right"]
+        left = payload.get("left", 0)
+        right = payload.get("right", 0)
+        light = payload.get("light", 0)
 
         if left > 0:
             leftMotor.forward(left)
@@ -71,6 +97,11 @@ async def echo(websocket):
             rightMotor.backward(abs(right))
         else:
             rightMotor.stop()
+
+        if light != 0:
+            enable_lights()
+        else:
+            disable_lights()
 
 
 async def main():
