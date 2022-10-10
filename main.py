@@ -51,8 +51,9 @@ def enable_lights():
             police_blink()
         except KeyboardInterrupt:
             shift_update([0, 0, 0] + blanks)
+            break
 
-        break
+    shift_update([0, 0, 0] + blanks)
 
 
 def disable_lights():
@@ -82,7 +83,7 @@ async def echo(websocket):
         payload = json.loads(message)
         left = payload.get("left", 0)
         right = payload.get("right", 0)
-        light = payload.get("light", 0)
+        light = payload.get("light", None)
 
         if left > 0:
             leftMotor.forward(left)
@@ -98,15 +99,19 @@ async def echo(websocket):
         else:
             rightMotor.stop()
 
-        if light != 0:
-            enable_lights()
-        else:
+        if light == 1:
+            t1 = threading.Thread(target=enable_lights)
+            t1.setDaemon(True)
+            t1.start()
+
+        elif light == 0:
             disable_lights()
 
 
 async def main():
     async with websockets.serve(echo, "", PORT):
         awakening()
+        disable_lights()
         await asyncio.Future()
 
 

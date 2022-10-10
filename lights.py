@@ -4,7 +4,7 @@ from time import sleep
 clock = DigitalOutputDevice(23)
 latch = DigitalOutputDevice(24)
 data = DigitalOutputDevice(20)
-blanks = ["0", "0", "0", "0", "0"]
+blanks = [0, 0, 0, 0, 0]
 
 
 def linear():
