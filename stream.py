@@ -5,7 +5,7 @@ import socketserver
 from threading import Condition
 from http import server
 
-server = ...  # type: StreamingServer
+server = Null
 
 PAGE = """\
 <html>
