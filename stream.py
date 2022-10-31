@@ -5,7 +5,7 @@ import socketserver
 from threading import Condition
 from http import server
 
-server = False
+server = None
 
 PAGE = """\
 <html>
