@@ -4,6 +4,7 @@ import websockets
 from gpiozero import Motor
 import json
 import threading
+from buzzer import buzz
 
 from lights import police_blink, shift_update, blanks
 from stream import init_streaming_server
@@ -101,7 +102,8 @@ async def echo(websocket):
             rightMotor.stop()
 
         if light == 1:
-            t1 = threading.Thread(target=enable_lights)
+            #t1 = threading.Thread(target=enable_lights)
+            t1 = threading.Thread(target=buzz)
             t1.setDaemon(True)
             t1.start()
 
