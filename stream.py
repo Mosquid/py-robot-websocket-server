@@ -13,7 +13,7 @@ PAGE = """\
 <head>
 </head>
 <body style="margin: 0">
-  <img src="stream.mjpg" width="640" height="480" />
+  <img src="stream.mjpg" width="320" height="250" />
 </body>
 </html>
 """
@@ -94,7 +94,7 @@ def start_server():
 
 def init_streaming_server():
     global output
-    with picamera.PiCamera(resolution='640x480', framerate=24) as camera:
+    with picamera.PiCamera(resolution='320x250', framerate=24) as camera:
         output = StreamingOutput()
         camera.rotation = 180
         camera.start_recording(output, format='mjpeg')
