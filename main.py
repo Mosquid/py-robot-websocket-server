@@ -114,8 +114,12 @@ async def echo(websocket):
 async def main():
     async with websockets.serve(echo, "", PORT):
         awakening()
-        init_streaming_server()
         disable_lights()
+
+        t2 = threading.Thread(target=init_streaming_server)
+        t2.setDaemon(True)
+        t2.start()
+
         await asyncio.Future()
 
 
