@@ -6,6 +6,7 @@ import json
 import threading
 
 from lights import police_blink, shift_update, blanks
+from stream import init_streaming_server
 
 leftMotor = Motor(12, 13)
 rightMotor = Motor(25, 21)
@@ -111,6 +112,7 @@ async def echo(websocket):
 async def main():
     async with websockets.serve(echo, "", PORT):
         awakening()
+        init_streaming_server()
         disable_lights()
         await asyncio.Future()
 
