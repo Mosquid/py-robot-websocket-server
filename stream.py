@@ -5,7 +5,8 @@ import socketserver
 from threading import Condition
 from http import server
 
-server = None
+server: any
+output: any
 
 PAGE = """\
 <html>
@@ -92,6 +93,7 @@ def start_server():
 
 
 def init_streaming_server():
+    global output
     with picamera.PiCamera(resolution='640x480', framerate=24) as camera:
         output = StreamingOutput()
         camera.rotation = 180
