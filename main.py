@@ -13,7 +13,7 @@ leftMotor = Motor(12, 13)
 rightMotor = Motor(25, 21)
 lightsOn = False
 
-PORT = 1488
+PORT = 5000
 
 
 def debounce(wait_time):
